@@ -30,7 +30,7 @@ marker_height = 50
 # road and edge markers
 road = (100, 0, 300, height)
 left_edge_marker = (95, 0, marker_width, height)
-right_edge_marker = (395 , 0, marker_width, height)
+right_edge_marker = (395, 0, marker_width, height)
 
 # x coordinates of lanes
 left_lane = 150
