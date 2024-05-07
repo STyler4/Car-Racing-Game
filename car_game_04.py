@@ -41,6 +41,19 @@ lanes = [left_lane, centre_lane, right_lane]
 # for animating movement of the lane markers
 lane_marker_move_y = 0
 
+class Vehicle(pygame.sprite.Sprite):
+
+    def __init__(self, image, x, y):
+        pygame.sprite.Sprite.__init__(self)
+
+        # scale the image down so it fits in the lane
+        image_scale = 45 / image.get_rect().width
+        new_width = image.get_rect().width * image_scale
+        new_height = image.get_rect().height * image_scale
+        self.image = pygame.scale(image, (new_width, new_height))
+
+        self.rect
+
 # game loop
 clock = pygame.time.Clock()
 fps = 120
