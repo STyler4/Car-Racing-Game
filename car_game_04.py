@@ -61,12 +61,12 @@ class Vehicle(pygame.sprite.Sprite):
 class PlayerVehicle(Vehicle):
 
     def __init__(self, x, y):
-        image = pygame.image.load('Topdown_vehicle_sprites_pack/car.png')
+        image = pygame.image.load('Topdown_vehicle_sprites_pack/police.png')
         super().__init__(image, x, y)
 
 
 # player's starting coordinates
-player_x = 250
+player_x = 255
 player_y = 400
 
 # create the player's car
