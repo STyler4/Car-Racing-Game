@@ -49,7 +49,7 @@ class Vehicle(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # scale the image down so it fits in the lane
-        image_scale = 120 / image.get_rect().width
+        image_scale = 140 / image.get_rect().width
         new_width = image.get_rect().width * image_scale
         new_height = image.get_rect().height * image_scale
         self.image = pygame.transform.scale(image, (new_width, new_height))
@@ -61,12 +61,12 @@ class Vehicle(pygame.sprite.Sprite):
 class PlayerVehicle(Vehicle):
 
     def __init__(self, x, y):
-        image = pygame.image.load('Topdown_vehicle_sprites_pack/police.png')
+        image = pygame.image.load('Topdown_vehicle_sprites_pack/car.png')
         super().__init__(image, x, y)
 
 
 # player's starting coordinates
-player_x = 255
+player_x = 253
 player_y = 400
 
 # create the player's car
