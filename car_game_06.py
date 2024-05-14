@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import random
 
-
 pygame.init()
 
 # create the window
@@ -42,27 +41,27 @@ lanes = [left_lane, centre_lane, right_lane]
 # for animating movement of the lane markers
 lane_marker_move_y = 0
 
-
 class Vehicle(pygame.sprite.Sprite):
 
-    def __init__(self, image, x, y):
+    def __init__(self, images, x, y, switch_interval=500):
         pygame.sprite.Sprite.__init__(self)
 
-        # scale the image down so it fits in the lane
-        image_scale = 100 / image.get_rect().width
-        new_width = image.get_rect().width * image_scale
-        new_height = image.get_rect().height * image_scale
-        self.image = pygame.transform.scale(image, (new_width, new_height))
+        self.images = [pygame.transform.scale(image, (100, 100)) for image in images]
+        self.current_image = 0
+        self.image = self.images[self.current_image]
 
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
+
+        self.switch_interval = switch_interval
+        self.last_switch = pygame.time.get_ticks()
 
 
 class PlayerVehicle(Vehicle):
 
     def __init__(self, x, y):
         image = pygame.image.load('Topdown_vehicle_sprites_pack/car.png')
-        super().__init__(image, x, y)
+        super().__init__([image], x, y)
 
 
 # player's starting coordinates
@@ -75,12 +74,18 @@ player = PlayerVehicle(player_x, player_y)
 player_group.add(player)
 
 # load the other vehicle images
-image_filenames = ['truck.png', 'police.png', 'taxi.png', 'ambulance.png', 'mini_van.png',
+image_filenames = ['truck.png', 'taxi.png', 'ambulance.png', 'mini_van.png',
                    'audi.png', 'black_viper.png', 'mini_truck.png']
 vehicle_images = []
 for image_filename in image_filenames:
     image = pygame.image.load('Topdown_vehicle_sprites_pack/' + image_filename)
-    vehicle_images.append(image)
+    vehicle_images.append([image])
+
+# load the police car images
+police_images = [pygame.image.load('Topdown_vehicle_sprites_pack/Police_animation/1.png'),
+                 pygame.image.load('Topdown_vehicle_sprites_pack/Police_animation/2.png'),
+                 pygame.image.load('Topdown_vehicle_sprites_pack/Police_animation/3.png')]
+vehicle_images.append(police_images)
 
 # sprite group for vehicles
 vehicle_group = pygame.sprite.Group()
@@ -88,6 +93,7 @@ vehicle_group = pygame.sprite.Group()
 # load the crash image
 crash = pygame.image.load('Topdown_vehicle_sprites_pack/explosion2.png')
 crash_rect = crash.get_rect()
+
 # game loop
 clock = pygame.time.Clock()
 fps = 120
@@ -159,13 +165,20 @@ while running:
             lane = random.choice(lanes)
 
             # select a random vehicle image
-            image = random.choice(vehicle_images)
-            vehicle = Vehicle(image, lane, height / -2)
+            images = random.choice(vehicle_images)
+            vehicle = Vehicle(images, lane, height / -2)
             vehicle_group.add(vehicle)
 
     # make the vehicles move
     for vehicle in vehicle_group:
         vehicle.rect.y += speed
+
+        # switch image if it's time
+        now = pygame.time.get_ticks()
+        if now - vehicle.last_switch > vehicle.switch_interval:
+            vehicle.current_image = (vehicle.current_image + 1) % len(vehicle.images)
+            vehicle.image = vehicle.images[vehicle.current_image]
+            vehicle.last_switch = now
 
         # remove the vehicle once it goes off screen
         if vehicle.rect.top >= height:
