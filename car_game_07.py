@@ -192,6 +192,12 @@ while running:
     for vehicle in vehicle_group:
         vehicle.rect.y += vehicle.speed  # Use the vehicle's speed instead of the player's speed
 
+        # Check if the vehicle collides with any other vehicle
+        for other_vehicle in vehicle_group:
+            if vehicle != other_vehicle and pygame.sprite.collide_rect(vehicle, other_vehicle):
+                vehicle.kill()
+                break
+
         # Switch image if it's time
         now = pygame.time.get_ticks()
         if now - vehicle.last_switch > vehicle.switch_interval:
