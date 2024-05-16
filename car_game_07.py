@@ -57,6 +57,9 @@ class Vehicle(pygame.sprite.Sprite):
         self.switch_interval = switch_interval
         self.last_switch = pygame.time.get_ticks()
 
+        # Add a speed attribute
+        self.speed = random.randint(1, speed)  # speed is the player's speed
+
 
 class PlayerVehicle(Vehicle):
 
@@ -171,14 +174,23 @@ while running:
             # Select a random lane
             lane = random.choice(lanes)
 
-            # Select a random vehicle image
+            # Create a new vehicle
             images = random.choice(vehicle_images)
-            vehicle = Vehicle(images, lane, height / -2)
-            vehicle_group.add(vehicle)
+            new_vehicle = Vehicle(images, lane, height / -2)
+
+            # Check if the new vehicle collides with any existing vehicle
+            for vehicle in vehicle_group:
+                if pygame.sprite.collide_rect(new_vehicle, vehicle):
+                    add_vehicle = False
+                    break
+
+            # If the new vehicle does not collide with any existing vehicle, add it to the game
+            if add_vehicle:
+                vehicle_group.add(new_vehicle)
 
     # Make the vehicles move
     for vehicle in vehicle_group:
-        vehicle.rect.y += speed
+        vehicle.rect.y += vehicle.speed  # Use the vehicle's speed instead of the player's speed
 
         # Switch image if it's time
         now = pygame.time.get_ticks()
