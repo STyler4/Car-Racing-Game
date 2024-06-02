@@ -298,18 +298,18 @@ while running:
     font = pygame.font.Font(pygame.font.get_default_font(), 16)
     high_score_text_1 = font.render('High', True, white)
     high_score_rect_1 = high_score_text_1.get_rect()
-    high_score_rect_1.top_left = (10, 400)  # Adjusted position to the green section
+    high_score_rect_1.topleft = (10, 400)  # Adjusted position to the green section
     screen.blit(high_score_text_1, high_score_rect_1)
 
     high_score_text_2 = font.render('Score: ' + str(high_score), True, white)
     high_score_rect_2 = high_score_text_2.get_rect()
-    high_score_rect_2.top_left = (10, 420)  # Adjusted position to the green section
+    high_score_rect_2.topleft = (10, 420)  # Adj usted position to the green section
     screen.blit(high_score_text_2, high_score_rect_2)
 
     # Display the score
     text = font.render('Score: ' + str(score), True, white)
     text_rect = text.get_rect()
-    text_rect.top_left = (10, 450)  # Adjusted position to the green section
+    text_rect.topleft = (10, 450)  # Adjusted position to the green section
     screen.blit(text, text_rect)
 
     # Check if there's a head on collision
